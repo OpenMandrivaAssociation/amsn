@@ -60,7 +60,7 @@ perl -pi -e "s|^set libtls .*|set libtls \"%{_libdir}/tls1.50\"|g" amsn
 rm -f configure
 libtoolize --copy --force; aclocal-1.7; autoconf --force
 
-%configure2_5x
+%configure2_5x --enable-alsa
 
 %make
 
@@ -89,13 +89,6 @@ ln -sf %{_docdir}%{name}-%{version}/README %{buildroot}%{_datadir}/amsn/README
 ln -sf %{_docdir}%{name}-%{version}/HELP %{buildroot}%{_datadir}/amsn/HELP
 
 # Menu
-install -d %{buildroot}%{_menudir}
-cat > %{buildroot}%{_menudir}/%{name} <<EOF
-?package(%{name}): command="%{_bindir}/%{name}" needs="X11" \
-icon="%{name}.png" section="Internet/Instant Messaging" \
-title="aMSN" longtitle="MSN clone" xdg="true"
-EOF
-
 desktop-file-install --vendor="" \
   --remove-category="Application" \
   --add-category="Network" \
@@ -137,7 +130,6 @@ rm -rf %{buildroot}
 %dir %{_datadir}/amsn
 %{_datadir}/amsn/
 %{_datadir}/applications/amsn.desktop
-%{_menudir}/*
 %{_miconsdir}/%{name}.png
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
