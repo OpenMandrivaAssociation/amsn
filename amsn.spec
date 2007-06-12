@@ -1,13 +1,26 @@
+%define name	amsn
+%define version	0.97
+%define pre	RC1
+%if %pre
+%define release	%mkrel 0.%pre.1
+%else
+%define release	%mkrel 1
+%endif
+
 Summary:	MSN Messenger clone for Linux
 Summary(fr):	Clône MSN Messenger pour Linux
 Summary(de):	MSN Messenger-Klon für Linux
-Name:		amsn
-Version:	0.96
-Release:	%mkrel 3
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
 License:	GPL
 Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
-Source0:	http://prdownloads.sourceforge.net/amsn/amsn-%{version}.tar.bz2
+%if %pre
+Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
+%else
+Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+%endif
 Source2:	amsn-0.95.startup.bz2
 Patch0:		amsn-0.95-www-browser.diff
 BuildRequires:	tcl >= 8.4.2-2mdk, openssl-devel
@@ -25,11 +38,9 @@ Requires:       soundwrapper
 BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
 
 %description
-This is Tcl/Tk clone that implements the Microsoft Messenger (MSN) for
-Unix,Windows, or Macintosh platforms. It supports file transfers,
-groups, and many more features. Visit http://amsn.sourceforge.net/ for
-details. This is an ongoing project, and it is already going pretty
-well.
+AMSN is a Microsoft Messenger (MSN) clone for Unix, Windows and 
+Macintosh platforms. It supports file transfers, groups, video,
+voice and many more features.
 
 %description -l fr
 amsn est un client Microsoft Messenger (MSN) pour UNIX, Windows et
@@ -46,7 +57,11 @@ Projekt zu erfahren.
 
 %prep
 
-%setup -q -n amsn-%{version}
+%if %pre
+%setup -q -n %{name}-%{version}%{pre}
+%else
+%setup -q
+%endif
 %patch0 -p0 -b .www-browser
 
 bzcat %{SOURCE2} > amsn.startup
@@ -67,9 +82,7 @@ libtoolize --copy --force; aclocal-1.7; autoconf --force
 %install
 rm -rf %{buildroot}
 
-%make \
-    INSTALL_PREFIX=%{buildroot} \
-    rpm-install
+%makeinstall_std
 
 install -d %{buildroot}%{_bindir}
 rm -f %{buildroot}%{_bindir}/amsn
@@ -80,10 +93,6 @@ pushd %{buildroot}%{_bindir}
     ln -snf %{_datadir}/amsn/amsn-remote amsn-remote
     ln -snf %{_datadir}/amsn/amsn-remote-CLI amsn-remote-CLI
 popd
-
-# mimic the previous version somewhat
-install -d %{buildroot}%{_datadir}/pixmaps
-install -m0644 icons/48x48/msn.png %{buildroot}%{_datadir}/pixmaps/msn.png
 
 ln -sf %{_docdir}%{name}-%{version}/README %{buildroot}%{_datadir}/amsn/README
 ln -sf %{_docdir}%{name}-%{version}/HELP %{buildroot}%{_datadir}/amsn/HELP
@@ -100,12 +109,19 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cp  $RPM_BUILD_ROOT%{_datadir}/amsn/amsn.desktop $RPM_BUILD_ROOT%{_datadir}/applications/amsn.desktop
 
 #icons
-mkdir -p $RPM_BUILD_ROOT/%_liconsdir
-convert -size 48x48 icons/128x128/aMSN_128.png $RPM_BUILD_ROOT/%_liconsdir/%name.png
-mkdir -p $RPM_BUILD_ROOT/%_iconsdir
-convert -size 32x32 icons/128x128/aMSN_128.png $RPM_BUILD_ROOT/%_iconsdir/%name.png
-mkdir -p $RPM_BUILD_ROOT/%_miconsdir
-convert -size 16x16 icons/128x128/aMSN_128.png $RPM_BUILD_ROOT/%_miconsdir/%name.png
+mkdir -p $RPM_BUILD_ROOT/{%_liconsdir,%_iconsdir,%_miconsdir}
+mkdir -p $RPM_BUILD_ROOT/%_iconsdir/hicolor/{128x128,96x96,72x72,64x64,48x48,32x32,22x22,16x16}/apps
+install -m644 desktop-icons/48x48/apps/%{name}.png $RPM_BUILD_ROOT/%_liconsdir/%name.png
+install -m644 desktop-icons/32x32/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/%name.png
+install -m644 desktop-icons/16x16/apps/%{name}.png $RPM_BUILD_ROOT/%_miconsdir/%name.png
+install -m644 desktop-icons/128x128/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/128x128/apps/%name.png
+install -m644 desktop-icons/96x96/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/96x96/apps/%name.png
+install -m644 desktop-icons/72x72/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/72x72/apps/%name.png
+install -m644 desktop-icons/64x64/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/64x64/apps/%name.png
+install -m644 desktop-icons/48x48/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/48x48/apps/%name.png
+install -m644 desktop-icons/32x32/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/32x32/apps/%name.png
+install -m644 desktop-icons/22x22/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/22x22/apps/%name.png
+install -m644 desktop-icons/16x16/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/16x16/apps/%name.png
 
 # cleanup
 rm -rf %{buildroot}%{_datadir}/amsn/HELP
@@ -114,9 +130,11 @@ rm -f %{buildroot}%{_datadir}/amsn/sndplay
 
 %post
 %update_menus
+%update_icon_cache hicolor
 
 %postun
 %clean_menus
+%clean_icon_cache hicolor
 
 %clean
 rm -rf %{buildroot}
@@ -124,17 +142,13 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc AGREEMENT CREDITS FAQ GNUGPL HELP README TODO
-%{_bindir}/amsn
-%{_bindir}/amsn-remote
-%{_bindir}/amsn-remote-CLI
-%dir %{_datadir}/amsn
-%{_datadir}/amsn/
-%{_datadir}/applications/amsn.desktop
+%{_bindir}/%{name}
+%{_bindir}/%{name}-remote
+%{_bindir}/%{name}-remote-CLI
+%{_datadir}/%{name}
+%{_datadir}/applications/%{name}.desktop
 %{_miconsdir}/%{name}.png
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
+%{_iconsdir}/hicolor/*/apps/*
 %{_datadir}/pixmaps/*
-
-
-
-
