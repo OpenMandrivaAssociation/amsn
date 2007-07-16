@@ -32,7 +32,6 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  png-devel
 BuildRequires:  jpeg-devel
 Requires:	tcl >= 8.4.2
-Requires:	libtcltls1.50
 Requires:	tk >= 8.4.2
 Requires:	%{mklibname tcltls 1.50}
 Requires:       soundwrapper
