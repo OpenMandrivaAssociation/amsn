@@ -2,7 +2,7 @@
 %define version	0.97
 %define pre	RC1
 %if %pre
-%define release	%mkrel 0.%pre.1
+%define release	%mkrel -c %pre 2
 %else
 %define release	%mkrel 1
 %endif
@@ -26,7 +26,7 @@ Patch0:		amsn-0.95-www-browser.diff
 BuildRequires:	tcl >= 8.4.2-2mdk, openssl-devel
 BuildRequires:	tk >= 8.4.2
 BuildRequires:  tcl-devel, tk-devel
-BuildRequires:  automake1.7
+BuildRequires:  automake
 BuildRequires:	ImageMagick
 BuildRequires:  desktop-file-utils
 BuildRequires:  png-devel
@@ -73,7 +73,7 @@ perl -pi -e "s|^set libtls .*|set libtls \"%{_libdir}/tls1.50\"|g" amsn
 
 %build
 rm -f configure
-libtoolize --copy --force; aclocal-1.7; autoconf --force
+libtoolize --copy --force; aclocal; autoconf --force
 
 %configure2_5x --enable-alsa
 
@@ -100,9 +100,11 @@ ln -sf %{_docdir}%{name}-%{version}/HELP %{buildroot}%{_datadir}/amsn/HELP
 # Menu
 desktop-file-install --vendor="" \
   --remove-category="Application" \
+  --remove-key='Info' \
+  --remove-key='Encoding' \
   --add-category="Network" \
   --add-category="InstantMessaging" \
-  --add-category="X-MandrivaLinux-Internet-InstantMessaging" \
+  --add-category="X-MandrivaLinux-CrossDesktop" \
   --dir $RPM_BUILD_ROOT%{_datadir}/amsn $RPM_BUILD_ROOT%{_datadir}/amsn/amsn.desktop
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
