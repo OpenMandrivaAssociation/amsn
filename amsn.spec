@@ -1,10 +1,15 @@
 %define name	amsn
 %define version	0.97
-%define pre	RC1
+%define pre	0
+%define svn	20070905
 %if %pre
 %define release	%mkrel -c %pre 2
 %else
+%if %svn
+%define release	%mkrel 0.RC1.%svn.1
+%else
 %define release	%mkrel 1
+%endif
 %endif
 
 Summary:	MSN Messenger clone for Linux
@@ -19,7 +24,11 @@ URL:		http://amsn.sourceforge.net/
 %if %pre
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
 %else
+%if %svn
+Source0:	http://www.amsn-project.net/amsn_dev.tar.gz
+%else
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+%endif
 %endif
 Source2:	amsn-0.95.startup.bz2
 Patch0:		amsn-0.95-www-browser.diff
@@ -60,7 +69,11 @@ Projekt zu erfahren.
 %if %pre
 %setup -q -n %{name}-%{version}%{pre}
 %else
+%if %svn
+%setup -q -n msn
+%else
 %setup -q
+%endif
 %endif
 %patch0 -p0 -b .www-browser
 
@@ -98,7 +111,10 @@ ln -sf %{_docdir}%{name}-%{version}/README %{buildroot}%{_datadir}/amsn/README
 ln -sf %{_docdir}%{name}-%{version}/HELP %{buildroot}%{_datadir}/amsn/HELP
 
 # Menu
+perl -pi -e 's,%{name}.png,%{name},g' $RPM_BUILD_ROOT%{_datadir}/amsn/amsn.desktop
 desktop-file-install --vendor="" \
+  --remove-key="Encoding" \
+  --remove-key="Info" \
   --remove-category="Application" \
   --remove-key='Info' \
   --remove-key='Encoding' \
@@ -111,11 +127,7 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cp  $RPM_BUILD_ROOT%{_datadir}/amsn/amsn.desktop $RPM_BUILD_ROOT%{_datadir}/applications/amsn.desktop
 
 #icons
-mkdir -p $RPM_BUILD_ROOT/{%_liconsdir,%_iconsdir,%_miconsdir}
 mkdir -p $RPM_BUILD_ROOT/%_iconsdir/hicolor/{128x128,96x96,72x72,64x64,48x48,32x32,22x22,16x16}/apps
-install -m644 desktop-icons/48x48/apps/%{name}.png $RPM_BUILD_ROOT/%_liconsdir/%name.png
-install -m644 desktop-icons/32x32/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/%name.png
-install -m644 desktop-icons/16x16/apps/%{name}.png $RPM_BUILD_ROOT/%_miconsdir/%name.png
 install -m644 desktop-icons/128x128/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/128x128/apps/%name.png
 install -m644 desktop-icons/96x96/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/96x96/apps/%name.png
 install -m644 desktop-icons/72x72/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/72x72/apps/%name.png
@@ -149,8 +161,6 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}-remote-CLI
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
-%{_miconsdir}/%{name}.png
-%{_iconsdir}/%{name}.png
-%{_liconsdir}/%{name}.png
 %{_iconsdir}/hicolor/*/apps/*
 %{_datadir}/pixmaps/*
+
