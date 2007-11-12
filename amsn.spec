@@ -1,12 +1,12 @@
 %define name	amsn
 %define version	0.97
 %define pre	0
-%define svn	20070905
+%define svn	20071112
 %if %pre
 %define release	%mkrel -c %pre 2
 %else
 %if %svn
-%define release	%mkrel 0.RC1.%svn.2
+%define release	%mkrel 0.RC1.%svn.1
 %else
 %define release	%mkrel 1
 %endif
@@ -18,7 +18,7 @@ Summary(de):	MSN Messenger-Klon für Linux
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
-License:	GPL
+License:	GPLv2+
 Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
 %if %pre
@@ -32,9 +32,11 @@ Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 %endif
 Source2:	amsn-0.95.startup.bz2
 Patch0:		amsn-0.95-www-browser.diff
-BuildRequires:	tcl >= 8.4.2-2mdk, openssl-devel
+BuildRequires:	tcl >= 8.4.2-2mdk
+BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.4.2
-BuildRequires:  tcl-devel, tk-devel
+BuildRequires:  tcl-devel
+BuildRequires:	tk-devel
 BuildRequires:  automake
 BuildRequires:	ImageMagick
 BuildRequires:  desktop-file-utils
@@ -44,6 +46,7 @@ Requires:	tcl >= 8.4.2
 Requires:	tk >= 8.4.2
 Requires:	%{mklibname tcltls 1.50}
 Requires:       soundwrapper
+Requires:	tcl-snack
 BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
 
 %description
