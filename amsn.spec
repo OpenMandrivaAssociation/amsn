@@ -47,6 +47,7 @@ Requires:	tk >= 8.4.2
 Requires:	%{mklibname tcltls 1.50}
 Requires:       soundwrapper
 Requires:	tcl-snack
+BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
 
 %description
 AMSN is a Microsoft Messenger (MSN) clone for Unix, Windows and 
