@@ -1,7 +1,7 @@
 %define name	amsn
 %define version	0.97
 %define pre	0
-%define svn	20071112
+%define svn	0
 %if %pre
 %define release	%mkrel -c %pre 2
 %else
