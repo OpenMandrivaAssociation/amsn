@@ -32,9 +32,9 @@ Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 %endif
 Source2:	amsn-0.95.startup.bz2
 Patch0:		amsn-0.95-www-browser.diff
-BuildRequires:	tcl >= 8.4.2-2mdk
+BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
-BuildRequires:	tk >= 8.4.2
+BuildRequires:	tk >= 8.5
 BuildRequires:  tcl-devel
 BuildRequires:	tk-devel
 BuildRequires:  automake
@@ -42,8 +42,8 @@ BuildRequires:	ImageMagick
 BuildRequires:  desktop-file-utils
 BuildRequires:  png-devel
 BuildRequires:  jpeg-devel
-Requires:	tcl >= 8.4.2
-Requires:	tk >= 8.4.2
+Requires:	tcl >= 8.5
+Requires:	tk >= 8.5
 Requires:	%{mklibname tcltls 1.50}
 Requires:       soundwrapper
 Requires:	tcl-snack
