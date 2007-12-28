@@ -35,8 +35,8 @@ Patch0:		amsn-0.95-www-browser.diff
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
-BuildRequires:  tcl-devel
-BuildRequires:	tk-devel
+BuildRequires:  tcl-devel >= 8.5
+BuildRequires:	tk-devel >= 8.5
 BuildRequires:  automake
 BuildRequires:	ImageMagick
 BuildRequires:  desktop-file-utils
