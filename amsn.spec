@@ -8,7 +8,7 @@
 %if %svn
 %define release	%mkrel 0.RC1.%svn.1
 %else
-%define release	%mkrel 1
+%define release	%mkrel 2
 %endif
 %endif
 
