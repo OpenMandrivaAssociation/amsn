@@ -145,13 +145,17 @@ rm -rf %{buildroot}%{_datadir}/amsn/HELP
 rm -rf %{buildroot}%{_datadir}/amsn/README
 rm -f %{buildroot}%{_datadir}/amsn/sndplay
 
+%if %mdkversion < 200900
 %post
 %update_menus
 %update_icon_cache hicolor
+%endif
 
+%if %mdkversion < 200900
 %postun
 %clean_menus
 %clean_icon_cache hicolor
+%endif
 
 %clean
 rm -rf %{buildroot}
