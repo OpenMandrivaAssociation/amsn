@@ -1,14 +1,25 @@
+# Package contains plugins not built with libtool, and does not contain
+# any shared libraries, so disable underlinking checks - AdamW 2008/07
+%define _disable_ld_no_undefined 1
+
 %define name	amsn
-%define version	0.97
+%define version	0.97.1
 %define pre	0
 %define svn	0
+%define rel	1
 %if %pre
-%define release	%mkrel -c %pre 2
+%define release		%mkrel -c %pre %rel
+%define distname	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
+%define dirname		%{name}-%{version}%{pre}
 %else
 %if %svn
-%define release	%mkrel 0.RC1.%svn.1
+%define release		%mkrel 0.RC1.%svn.%rel
+%define distname	http://www.amsn-project.net/amsn_dev.tar.gz
+%define dirname		msn
 %else
-%define release	%mkrel 2
+%define release		%mkrel %rel
+%define distname	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+%define dirname		%{name}-%{version}
 %endif
 %endif
 
@@ -21,15 +32,7 @@ Release:	%{release}
 License:	GPLv2+
 Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
-%if %pre
-Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
-%else
-%if %svn
-Source0:	http://www.amsn-project.net/amsn_dev.tar.gz
-%else
-Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-%endif
-%endif
+Source0:	%{distname}
 Source2:	amsn-0.95.startup.bz2
 Patch0:		amsn-0.95-www-browser.diff
 BuildRequires:	tcl >= 8.5
@@ -69,15 +72,7 @@ Projekt zu erfahren.
 
 %prep
 
-%if %pre
-%setup -q -n %{name}-%{version}%{pre}
-%else
-%if %svn
-%setup -q -n msn
-%else
-%setup -q
-%endif
-%endif
+%setup -q -n %{dirname}
 %patch0 -p0 -b .www-browser
 
 bzcat %{SOURCE2} > amsn.startup
@@ -114,7 +109,7 @@ ln -sf %{_docdir}%{name}-%{version}/README %{buildroot}%{_datadir}/amsn/README
 ln -sf %{_docdir}%{name}-%{version}/HELP %{buildroot}%{_datadir}/amsn/HELP
 
 # Menu
-perl -pi -e 's,%{name}.png,%{name},g' $RPM_BUILD_ROOT%{_datadir}/amsn/amsn.desktop
+perl -pi -e 's,%{name}.png,%{name},g' %{buildroot}%{_datadir}/amsn/amsn.desktop
 desktop-file-install --vendor="" \
   --remove-key="Encoding" \
   --remove-key="Info" \
@@ -124,21 +119,21 @@ desktop-file-install --vendor="" \
   --add-category="Network" \
   --add-category="InstantMessaging" \
   --add-category="X-MandrivaLinux-CrossDesktop" \
-  --dir $RPM_BUILD_ROOT%{_datadir}/amsn $RPM_BUILD_ROOT%{_datadir}/amsn/amsn.desktop
+  --dir %{buildroot}%{_datadir}/amsn %{buildroot}%{_datadir}/amsn/amsn.desktop
 
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
-cp  $RPM_BUILD_ROOT%{_datadir}/amsn/amsn.desktop $RPM_BUILD_ROOT%{_datadir}/applications/amsn.desktop
+mkdir -p %{buildroot}%{_datadir}/applications
+cp  %{buildroot}%{_datadir}/amsn/amsn.desktop %{buildroot}%{_datadir}/applications/amsn.desktop
 
 #icons
-mkdir -p $RPM_BUILD_ROOT/%_iconsdir/hicolor/{128x128,96x96,72x72,64x64,48x48,32x32,22x22,16x16}/apps
-install -m644 desktop-icons/128x128/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/128x128/apps/%name.png
-install -m644 desktop-icons/96x96/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/96x96/apps/%name.png
-install -m644 desktop-icons/72x72/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/72x72/apps/%name.png
-install -m644 desktop-icons/64x64/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/64x64/apps/%name.png
-install -m644 desktop-icons/48x48/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/48x48/apps/%name.png
-install -m644 desktop-icons/32x32/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/32x32/apps/%name.png
-install -m644 desktop-icons/22x22/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/22x22/apps/%name.png
-install -m644 desktop-icons/16x16/apps/%{name}.png $RPM_BUILD_ROOT/%_iconsdir/hicolor/16x16/apps/%name.png
+mkdir -p %{buildroot}/%_iconsdir/hicolor/{128x128,96x96,72x72,64x64,48x48,32x32,22x22,16x16}/apps
+install -m644 desktop-icons/128x128/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/128x128/apps/%name.png
+install -m644 desktop-icons/96x96/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/96x96/apps/%name.png
+install -m644 desktop-icons/72x72/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/72x72/apps/%name.png
+install -m644 desktop-icons/64x64/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/64x64/apps/%name.png
+install -m644 desktop-icons/48x48/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/48x48/apps/%name.png
+install -m644 desktop-icons/32x32/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/32x32/apps/%name.png
+install -m644 desktop-icons/22x22/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/22x22/apps/%name.png
+install -m644 desktop-icons/16x16/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/16x16/apps/%name.png
 
 # cleanup
 rm -rf %{buildroot}%{_datadir}/amsn/HELP
