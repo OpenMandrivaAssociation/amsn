@@ -3,7 +3,7 @@
 %define _disable_ld_no_undefined 1
 
 %define name	amsn
-%define version	0.97.1
+%define version	0.97.2
 %define pre	0
 %define svn	0
 %define rel	1
