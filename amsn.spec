@@ -6,7 +6,7 @@
 %define version	0.97.2
 %define pre	0
 %define svn	0
-%define rel	1
+%define rel	2
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -33,7 +33,7 @@ License:	GPLv2+
 Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
 Source0:	%{distname}
-Source2:	amsn-0.95.startup.bz2
+Source2:	amsn-0.97-startup
 Patch0:		amsn-0.95-www-browser.diff
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
@@ -75,8 +75,6 @@ Projekt zu erfahren.
 %setup -q -n %{dirname}
 %patch0 -p0 -b .www-browser
 
-bzcat %{SOURCE2} > amsn.startup
-
 # lib64 fixes
 perl -pi -e "s|/usr/lib/|%{_libdir}|g" configure*
 perl -pi -e "s|/lib\b|/%{_lib}|g" configure*
@@ -97,7 +95,7 @@ rm -rf %{buildroot}
 
 install -d %{buildroot}%{_bindir}
 rm -f %{buildroot}%{_bindir}/amsn
-install -m0755 amsn.startup %{buildroot}%{_bindir}/amsn
+install -m0755 %{SOURCE2} %{buildroot}%{_bindir}/amsn
 
 # fix softlinks
 pushd %{buildroot}%{_bindir}
