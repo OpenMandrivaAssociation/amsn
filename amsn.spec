@@ -6,7 +6,7 @@
 %define version	0.97.2
 %define pre	0
 %define svn	0
-%define rel	2
+%define rel	3
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
