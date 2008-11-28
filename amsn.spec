@@ -50,6 +50,7 @@ Requires:	tk >= 8.5
 Requires:	%{mklibname tcltls 1.50}
 Requires:       soundwrapper
 Requires:	tcl-snack
+Suggests:	gstreamer0.10-farsight
 BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
 
 %description
