@@ -2,23 +2,21 @@
 # any shared libraries, so disable underlinking checks - AdamW 2008/07
 %define _disable_ld_no_undefined 1
 
-%define name	amsn
-%define version	0.97.2
 %define pre	0
 %define svn	0
-%define rel	3
+%define rel	4
 %if %pre
 %define release		%mkrel -c %pre %rel
-%define distname	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
+%define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
 %define dirname		%{name}-%{version}%{pre}
 %else
 %if %svn
-%define release		%mkrel 0.RC1.%svn.%rel
+%define release		%mkrel 0.%svn.%rel
 %define distname	http://www.amsn-project.net/amsn_dev.tar.gz
 %define dirname		msn
 %else
 %define release		%mkrel %rel
-%define distname	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+%define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 %define dirname		%{name}-%{version}
 %endif
 %endif
@@ -26,8 +24,8 @@
 Summary:	MSN Messenger clone for Linux
 Summary(fr):	Clône MSN Messenger pour Linux
 Summary(de):	MSN Messenger-Klon für Linux
-Name:		%{name}
-Version:	%{version}
+Name:		amsn
+Version:	0.97.2
 Release:	%{release}
 License:	GPLv2+
 Group:		Networking/Instant messaging
@@ -35,6 +33,8 @@ URL:		http://amsn.sourceforge.net/
 Source0:	%{distname}
 Source2:	amsn-0.97-startup
 Patch0:		amsn-0.95-www-browser.diff
+# Make it detect Tcl/Tk 8.6 - not sure if it's needed - AdamW 2008/10
+Patch1:		amsn-0.97.2-tcl86.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -47,7 +47,7 @@ BuildRequires:  png-devel
 BuildRequires:  jpeg-devel
 Requires:	tcl >= 8.5
 Requires:	tk >= 8.5
-Requires:	%{mklibname tcltls 1.50}
+Requires:	tcltls
 Requires:       soundwrapper
 Requires:	tcl-snack
 Suggests:	gstreamer0.10-farsight
@@ -75,23 +75,21 @@ Projekt zu erfahren.
 
 %setup -q -n %{dirname}
 %patch0 -p0 -b .www-browser
+%patch1 -p1 -b .tcl86
 
 # lib64 fixes
-perl -pi -e "s|/usr/lib/|%{_libdir}|g" configure*
-perl -pi -e "s|/lib\b|/%{_lib}|g" configure*
-perl -pi -e "s|^set libtls .*|set libtls \"%{_libdir}/tls1.50\"|g" amsn
+sed -i -e "s|/usr/lib/|%{_libdir}|g" configure*
+sed -i -e "s|/lib\b|/%{_lib}|g" configure*
+sed -i -e "s|^set libtls .*|set libtls \"%{tcl_sitearch}/tls1.6\"|g" amsn
 
 %build
 rm -f configure
-libtoolize --copy --force; aclocal; autoconf --force
-
+autoreconf -i -f
 %configure2_5x --enable-alsa
-
 %make
 
 %install
 rm -rf %{buildroot}
-
 %makeinstall_std
 
 install -d %{buildroot}%{_bindir}
@@ -108,7 +106,7 @@ ln -sf %{_docdir}%{name}-%{version}/README %{buildroot}%{_datadir}/amsn/README
 ln -sf %{_docdir}%{name}-%{version}/HELP %{buildroot}%{_datadir}/amsn/HELP
 
 # Menu
-perl -pi -e 's,%{name}.png,%{name},g' %{buildroot}%{_datadir}/amsn/amsn.desktop
+sed -i -e 's,%{name}.png,%{name},g' %{buildroot}%{_datadir}/amsn/amsn.desktop
 desktop-file-install --vendor="" \
   --remove-key="Encoding" \
   --remove-key="Info" \
@@ -124,15 +122,15 @@ mkdir -p %{buildroot}%{_datadir}/applications
 cp  %{buildroot}%{_datadir}/amsn/amsn.desktop %{buildroot}%{_datadir}/applications/amsn.desktop
 
 #icons
-mkdir -p %{buildroot}/%_iconsdir/hicolor/{128x128,96x96,72x72,64x64,48x48,32x32,22x22,16x16}/apps
-install -m644 desktop-icons/128x128/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/128x128/apps/%name.png
-install -m644 desktop-icons/96x96/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/96x96/apps/%name.png
-install -m644 desktop-icons/72x72/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/72x72/apps/%name.png
-install -m644 desktop-icons/64x64/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/64x64/apps/%name.png
-install -m644 desktop-icons/48x48/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/48x48/apps/%name.png
-install -m644 desktop-icons/32x32/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/32x32/apps/%name.png
-install -m644 desktop-icons/22x22/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/22x22/apps/%name.png
-install -m644 desktop-icons/16x16/apps/%{name}.png %{buildroot}/%_iconsdir/hicolor/16x16/apps/%name.png
+mkdir -p %{buildroot}/%{_iconsdir}/hicolor/{128x128,96x96,72x72,64x64,48x48,32x32,22x22,16x16}/apps
+install -m644 desktop-icons/128x128/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/128x128/apps/%{name}.png
+install -m644 desktop-icons/96x96/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/96x96/apps/%{name}.png
+install -m644 desktop-icons/72x72/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/72x72/apps/%{name}.png
+install -m644 desktop-icons/64x64/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/64x64/apps/%{name}.png
+install -m644 desktop-icons/48x48/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/48x48/apps/%{name}.png
+install -m644 desktop-icons/32x32/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/32x32/apps/%{name}.png
+install -m644 desktop-icons/22x22/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/22x22/apps/%{name}.png
+install -m644 desktop-icons/16x16/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/16x16/apps/%{name}.png
 
 # cleanup
 rm -rf %{buildroot}%{_datadir}/amsn/HELP
