@@ -41,7 +41,7 @@ BuildRequires:	tk >= 8.5
 BuildRequires:  tcl-devel >= 8.5
 BuildRequires:	tk-devel >= 8.5
 BuildRequires:  automake
-BuildRequires:	ImageMagick
+BuildRequires:	imagemagick
 BuildRequires:  desktop-file-utils
 BuildRequires:  png-devel
 BuildRequires:  jpeg-devel
