@@ -4,7 +4,7 @@
 
 %define pre	0
 %define svn	0
-%define rel	4
+%define rel	5
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -32,9 +32,12 @@ Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
 Source0:	%{distname}
 Source2:	amsn-0.97-startup
-Patch0:		amsn-0.95-www-browser.diff
+Patch0:		amsn-0.97.2-www_browser.patch
 # Make it detect Tcl/Tk 8.6 - not sure if it's needed - AdamW 2008/10
 Patch1:		amsn-0.97.2-tcl86.patch
+# From Michael Schlenker: fix some variable problems in TkCximage which
+# stop it building - AdamW 2008/12
+Patch2:		amsn-0.97.2-variables.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -74,8 +77,9 @@ Projekt zu erfahren.
 %prep
 
 %setup -q -n %{dirname}
-%patch0 -p0 -b .www-browser
+%patch0 -p1 -b .www-browser
 %patch1 -p1 -b .tcl86
+%patch2 -p1 -b .variables
 
 # lib64 fixes
 sed -i -e "s|/usr/lib/|%{_libdir}|g" configure*
@@ -85,6 +89,11 @@ sed -i -e "s|^set libtls .*|set libtls \"%{tcl_sitearch}/tls1.6\"|g" amsn
 %build
 rm -f configure
 autoreconf -i -f
+
+# Needed due to a change in Tcl 8.6b1, until the code is fixed more
+# permanently - AdamW 2008/12
+export CFLAGS='%{optflags} -DCONST86=""'
+
 %configure2_5x --enable-alsa
 %make
 
