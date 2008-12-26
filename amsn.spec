@@ -4,7 +4,7 @@
 
 %define pre	0
 %define svn	0
-%define rel	5
+%define rel	6
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
