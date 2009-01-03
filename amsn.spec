@@ -4,7 +4,7 @@
 
 %define pre	0
 %define svn	0
-%define rel	6
+%define rel	7
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -38,6 +38,8 @@ Patch1:		amsn-0.97.2-tcl86.patch
 # From Michael Schlenker: fix some variable problems in TkCximage which
 # stop it building - AdamW 2008/12
 Patch2:		amsn-0.97.2-variables.patch
+Patch3:         amsn-0.97-libng-fixes.patch
+Patch4:         amsn-0.97-libng-libv4l2.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -48,12 +50,13 @@ BuildRequires:	imagemagick
 BuildRequires:  desktop-file-utils
 BuildRequires:  png-devel
 BuildRequires:  jpeg-devel
+BuildRequires:  libv4l-devel
 Requires:	tcl >= 8.5
 Requires:	tk >= 8.5
 Requires:	tcltls
 Requires:       soundwrapper
 Requires:	tcl-snack
-Suggests:	gstreamer0.10-farsight
+Suggests:	farsight2
 BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
 
 %description
@@ -63,16 +66,13 @@ voice and many more features.
 
 %description -l fr
 amsn est un client Microsoft Messenger (MSN) pour UNIX, Windows et
-Macintosh Ã©crit en Tcl/Tk.  Il supporte les tranferts de fichiers, les
-groupes et beaucoup d'autres possibilitÃ©s. 
-Visitez http://amsn.sourceforge.net/ pour de plus amples détails.
+Macintosh écrit en Tcl/Tk.  Il supporte les tranferts de fichiers, les
+groupes et beaucoup d'autres possibilités. 
 
 %description -l de
 amsn ist ein Microsoft Messenger (MSN) Client für UNIX, Windows und
 Macintosh, der in Tcl/Tk geschrieben ist. Es unterstützt
 Dateiübertragungen, Gruppen uvm.
-Begeben Sie sich auf http://amsn.sourceforge.net/ um mehr über dieses
-Projekt zu erfahren.
 
 %prep
 
@@ -80,6 +80,8 @@ Projekt zu erfahren.
 %patch0 -p1 -b .www-browser
 %patch1 -p1 -b .tcl86
 %patch2 -p1 -b .variables
+%patch3 -p1
+%patch4 -p1
 
 # lib64 fixes
 sed -i -e "s|/usr/lib/|%{_libdir}|g" configure*
@@ -124,7 +126,6 @@ desktop-file-install --vendor="" \
   --remove-key='Encoding' \
   --add-category="Network" \
   --add-category="InstantMessaging" \
-  --add-category="X-MandrivaLinux-CrossDesktop" \
   --dir %{buildroot}%{_datadir}/amsn %{buildroot}%{_datadir}/amsn/amsn.desktop
 
 mkdir -p %{buildroot}%{_datadir}/applications
