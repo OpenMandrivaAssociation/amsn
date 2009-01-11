@@ -1,10 +1,11 @@
 # Package contains plugins not built with libtool, and does not contain
 # any shared libraries, so disable underlinking checks - AdamW 2008/07
 %define _disable_ld_no_undefined 1
+%define _disable_ld_as_needed 1
 
 %define pre	0
-%define svn	0
-%define rel	7
+%define svn	10841
+%define rel	1
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -12,8 +13,8 @@
 %else
 %if %svn
 %define release		%mkrel 0.%svn.%rel
-%define distname	http://www.amsn-project.net/amsn_dev.tar.gz
-%define dirname		msn
+%define distname	%{name}-%{svn}.tar.lzma
+%define dirname		amsn
 %else
 %define release		%mkrel %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
@@ -25,21 +26,13 @@ Summary:	MSN Messenger clone for Linux
 Summary(fr):	Clône MSN Messenger pour Linux
 Summary(de):	MSN Messenger-Klon für Linux
 Name:		amsn
-Version:	0.97.2
+Version:	0.98.0
 Release:	%{release}
 License:	GPLv2+
 Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
 Source0:	%{distname}
 Source2:	amsn-0.97-startup
-Patch0:		amsn-0.97.2-www_browser.patch
-# Make it detect Tcl/Tk 8.6 - not sure if it's needed - AdamW 2008/10
-Patch1:		amsn-0.97.2-tcl86.patch
-# From Michael Schlenker: fix some variable problems in TkCximage which
-# stop it building - AdamW 2008/12
-Patch2:		amsn-0.97.2-variables.patch
-Patch3:         amsn-0.97-libng-fixes.patch
-Patch4:         amsn-0.97-libng-libv4l2.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -77,25 +70,8 @@ Dateiübertragungen, Gruppen uvm.
 %prep
 
 %setup -q -n %{dirname}
-%patch0 -p1 -b .www-browser
-%patch1 -p1 -b .tcl86
-%patch2 -p1 -b .variables
-%patch3 -p1
-%patch4 -p1
-
-# lib64 fixes
-sed -i -e "s|/usr/lib/|%{_libdir}|g" configure*
-sed -i -e "s|/lib\b|/%{_lib}|g" configure*
-sed -i -e "s|^set libtls .*|set libtls \"%{tcl_sitearch}/tls1.6\"|g" amsn
 
 %build
-rm -f configure
-autoreconf -i -f
-
-# Needed due to a change in Tcl 8.6b1, until the code is fixed more
-# permanently - AdamW 2008/12
-export CFLAGS='%{optflags} -DCONST86=""'
-
 %configure2_5x --enable-alsa
 %make
 
@@ -126,6 +102,7 @@ desktop-file-install --vendor="" \
   --remove-key='Encoding' \
   --add-category="Network" \
   --add-category="InstantMessaging" \
+  --add-category="X-MandrivaLinux-CrossDesktop" \
   --dir %{buildroot}%{_datadir}/amsn %{buildroot}%{_datadir}/amsn/amsn.desktop
 
 mkdir -p %{buildroot}%{_datadir}/applications
