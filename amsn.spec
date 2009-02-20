@@ -45,6 +45,7 @@ BuildRequires:  png-devel
 BuildRequires:  jpeg-devel
 BuildRequires:  libv4l-devel
 BuildRequires:	farsight2-devel
+BuildRequires:  libgstreamer-plugins-base-devel
 Requires:	tcl >= 8.5
 Requires:	tk >= 8.5
 Requires:	tcltls
