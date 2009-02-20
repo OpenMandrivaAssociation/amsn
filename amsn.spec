@@ -4,7 +4,7 @@
 %define _disable_ld_as_needed 1
 
 %define pre	0
-%define svn	10841
+%define svn	11028
 %define rel	1
 %if %pre
 %define release		%mkrel -c %pre %rel
@@ -44,6 +44,7 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  png-devel
 BuildRequires:  jpeg-devel
 BuildRequires:  libv4l-devel
+BuildRequires:	libfarsight2-devel
 Requires:	tcl >= 8.5
 Requires:	tk >= 8.5
 Requires:	tcltls
