@@ -44,7 +44,7 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  png-devel
 BuildRequires:  jpeg-devel
 BuildRequires:  libv4l-devel
-BuildRequires:	libfarsight2-devel
+BuildRequires:	farsight2-devel
 Requires:	tcl >= 8.5
 Requires:	tk >= 8.5
 Requires:	tcltls
