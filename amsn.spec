@@ -5,7 +5,7 @@
 
 %define pre	0
 %define svn	11098
-%define rel	1
+%define rel	2
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -51,7 +51,10 @@ Requires:	tk >= 8.5
 Requires:	tcltls
 Requires:       soundwrapper
 Requires:	tcl-snack
-Requires:	farsight2
+Requires:	gstreamer0.10-plugins-good
+Requires:	gstreamer0.10-plugins-bad
+Requires:	gstreamer0.10-farsight
+Requires:	gstreamer0.10-farsight2
 Obsoletes:	amsn-plugins
 Obsoletes:	amsn-skins
 BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
