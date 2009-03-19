@@ -4,7 +4,7 @@
 %define _disable_ld_as_needed 1
 
 %define pre	0
-%define svn	11074
+%define svn	11098
 %define rel	1
 %if %pre
 %define release		%mkrel -c %pre %rel
@@ -51,7 +51,9 @@ Requires:	tk >= 8.5
 Requires:	tcltls
 Requires:       soundwrapper
 Requires:	tcl-snack
-Suggests:	farsight2
+Requires:	farsight2
+Obsoletes:	amsn-plugins
+Obsoletes:	amsn-skins
 BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
 
 %description
