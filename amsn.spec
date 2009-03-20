@@ -55,6 +55,7 @@ Requires:	gstreamer0.10-plugins-good
 Requires:	gstreamer0.10-plugins-bad
 Requires:	gstreamer0.10-farsight
 Requires:	gstreamer0.10-farsight2
+Requires:	libnice
 Obsoletes:	amsn-plugins
 Obsoletes:	amsn-skins
 BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
