@@ -5,7 +5,7 @@
 
 %define pre	0
 %define svn	11098
-%define rel	4
+%define rel	5
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -33,6 +33,7 @@ Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
 Source0:	%{distname}
 Source2:	amsn-0.97-startup
+Patch0:		amsn-11098-pt-encoding.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -77,6 +78,7 @@ Dateiübertragungen, Gruppen uvm.
 %prep
 
 %setup -q -n %{dirname}
+%patch0 -p1 -b .pt_encoding
 
 %build
 %configure2_5x --enable-alsa
