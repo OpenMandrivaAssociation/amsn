@@ -5,7 +5,7 @@
 
 %define pre	0
 %define svn	11098
-%define rel	5
+%define rel	6
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -33,7 +33,10 @@ Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
 Source0:	%{distname}
 Source2:	amsn-0.97-startup
+Source3:	desktop_integration-r9739.zip
 Patch0:		amsn-11098-pt-encoding.patch
+Patch1:		amsn-11098-defaultplugins.patch
+Patch2:		amsn-11098-contact_list_extension.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -79,6 +82,10 @@ Dateiübertragungen, Gruppen uvm.
 
 %setup -q -n %{dirname}
 %patch0 -p1 -b .pt_encoding
+%patch1 -p1 -b .defaultplugins
+%patch2 -p1 -b .contact_list_extension
+cd plugins
+unzip %{_sourcedir}/desktop_integration-r9739.zip
 
 %build
 %configure2_5x --enable-alsa
