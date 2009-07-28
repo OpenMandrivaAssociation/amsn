@@ -4,7 +4,7 @@
 %define _disable_ld_as_needed 1
 
 %define pre	0
-%define svn	11098
+%define svn	11406
 %define rel	6
 %if %pre
 %define release		%mkrel -c %pre %rel
@@ -35,7 +35,7 @@ Source0:	%{distname}
 Source2:	amsn-0.97-startup
 Source3:	desktop_integration-r9739.zip
 Patch0:		amsn-11098-pt-encoding.patch
-Patch1:		amsn-11098-defaultplugins.patch
+Patch1:		amsn-11406-defaultplugins.patch
 Patch2:		amsn-11098-contact_list_extension.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
@@ -58,7 +58,7 @@ Requires:	tcl-snack
 Requires:	gstreamer0.10-plugins-good
 Requires:	gstreamer0.10-farsight
 Requires:	gstreamer0.10-farsight2
-Requires:	libnice
+Requires:	libnice-utils
 Obsoletes:	amsn-plugins
 Obsoletes:	amsn-skins
 BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
@@ -82,7 +82,7 @@ Dateiübertragungen, Gruppen uvm.
 
 %setup -q -n %{dirname}
 %patch0 -p1 -b .pt_encoding
-%patch1 -p1 -b .defaultplugins
+%patch1 -p0 -b .defaultplugins
 %patch2 -p1 -b .contact_list_extension
 cd plugins
 unzip %{_sourcedir}/desktop_integration-r9739.zip
