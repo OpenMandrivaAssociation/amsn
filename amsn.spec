@@ -5,7 +5,7 @@
 
 %define pre	0
 %define svn	11406
-%define rel	6
+%define rel	7
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -56,6 +56,7 @@ Requires:	tcltls
 Requires:       soundwrapper
 Requires:	tcl-snack
 Requires:	gstreamer0.10-plugins-good
+Requires:	gstreamer0.10-plugins-bad
 Requires:	gstreamer0.10-farsight
 Requires:	gstreamer0.10-farsight2
 Requires:	libnice-utils
