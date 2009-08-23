@@ -1,6 +1,6 @@
 %define pre	0
-%define svn	11406
-%define rel	8
+%define svn	11506
+%define rel	1
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
