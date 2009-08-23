@@ -1,11 +1,6 @@
-# Package contains plugins not built with libtool, and does not contain
-# any shared libraries, so disable underlinking checks - AdamW 2008/07
-%define _disable_ld_no_undefined 1
-%define _disable_ld_as_needed 1
-
 %define pre	0
 %define svn	11406
-%define rel	7
+%define rel	8
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -37,6 +32,7 @@ Source3:	desktop_integration-r9739.zip
 Patch0:		amsn-11098-pt-encoding.patch
 Patch1:		amsn-11406-defaultplugins.patch
 Patch2:		amsn-11098-contact_list_extension.patch
+Patch3:		amsn-0.98-linkage.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -85,11 +81,13 @@ Dateiübertragungen, Gruppen uvm.
 %patch0 -p1 -b .pt_encoding
 %patch1 -p0 -b .defaultplugins
 %patch2 -p1 -b .contact_list_extension
+%patch3 -p1 -b .link
 cd plugins
 unzip %{_sourcedir}/desktop_integration-r9739.zip
 
 %build
-%configure2_5x --enable-alsa
+autoreconf -fi
+%configure2_5x
 %make
 
 %install
