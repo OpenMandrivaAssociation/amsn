@@ -1,6 +1,6 @@
 %define pre	0
 %define svn	0
-%define rel	1
+%define rel	2
 %define oversion 0.98
 %if %pre
 %define release		%mkrel -c %pre %rel
@@ -37,20 +37,21 @@ Patch3:		amsn-0.98-linkage.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
-BuildRequires:  tcl-devel >= 8.5
+BuildRequires:	tcl-devel >= 8.5
 BuildRequires:	tk-devel >= 8.5
 BuildRequires:	imagemagick
-BuildRequires:  desktop-file-utils
-BuildRequires:  png-devel
-BuildRequires:  jpeg-devel
-BuildRequires:  libv4l-devel
+BuildRequires:	desktop-file-utils
+BuildRequires:	png-devel
+BuildRequires:	jpeg-devel
+BuildRequires:	libv4l-devel
 BuildRequires:	farsight2-devel
-BuildRequires:  libgstreamer-plugins-base-devel
-BuildRequires:  gupnp-igd-devel
+BuildRequires:	libgstreamer-plugins-base-devel
+BuildRequires:	gupnp-igd-devel
+BuildRequires:	libimlib-devel
 Requires:	tcl >= 8.5
 Requires:	tk >= 8.5
 Requires:	tcltls
-Requires:       soundwrapper
+Requires:	soundwrapper
 Requires:	tcl-snack
 Requires:	gstreamer0.10-plugins-good
 Requires:	gstreamer0.10-plugins-bad
@@ -89,6 +90,11 @@ Dateiübertragungen, Gruppen uvm.
 %build
 autoreconf -fi
 %configure2_5x
+%make
+
+#fix Imlib dependency
+rm -rf plugins/amsnplus/snapshot
+cd plugins/amsnplus/
 %make
 
 %install
