@@ -1,6 +1,7 @@
 %define pre	0
 %define svn	0
 %define rel	1
+%define oversion 0.98
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -12,8 +13,8 @@
 %define dirname		amsn
 %else
 %define release		%mkrel %rel
-%define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-%define dirname		%{name}-%{version}
+%define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{oversion}.tar.bz2
+%define dirname		%{name}-%{oversion}
 %endif
 %endif
 
@@ -21,7 +22,7 @@ Summary:	MSN Messenger clone for Linux
 Summary(fr):	Clône MSN Messenger pour Linux
 Summary(de):	MSN Messenger-Klon für Linux
 Name:		amsn
-Version:	0.98
+Version:	0.98.0
 Release:	%{release}
 License:	GPLv2+
 Group:		Networking/Instant messaging
