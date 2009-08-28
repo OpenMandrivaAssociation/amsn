@@ -1,5 +1,5 @@
 %define pre	0
-%define svn	11506
+%define svn	0
 %define rel	1
 %if %pre
 %define release		%mkrel -c %pre %rel
@@ -21,14 +21,14 @@ Summary:	MSN Messenger clone for Linux
 Summary(fr):	Clône MSN Messenger pour Linux
 Summary(de):	MSN Messenger-Klon für Linux
 Name:		amsn
-Version:	0.98.0
+Version:	0.98
 Release:	%{release}
 License:	GPLv2+
 Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
 Source0:	%{distname}
 Source2:	amsn-0.97-startup
-Source3:	desktop_integration-r9739.zip
+#Source3:	desktop_integration-r9739.zip
 Patch0:		amsn-11098-pt-encoding.patch
 Patch1:		amsn-11406-defaultplugins.patch
 Patch2:		amsn-11098-contact_list_extension.patch
@@ -82,8 +82,8 @@ Dateiübertragungen, Gruppen uvm.
 %patch1 -p0 -b .defaultplugins
 %patch2 -p1 -b .contact_list_extension
 %patch3 -p1 -b .link
-cd plugins
-unzip %{_sourcedir}/desktop_integration-r9739.zip
+#cd plugins
+#unzip %{_sourcedir}/desktop_integration-r9739.zip
 
 %build
 autoreconf -fi
