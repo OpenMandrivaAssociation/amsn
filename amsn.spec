@@ -1,6 +1,6 @@
 %define pre	0
 %define svn	0
-%define rel	4
+%define rel	5
 %define oversion 0.98
 %if %pre
 %define release		%mkrel -c %pre %rel
@@ -109,9 +109,6 @@ pushd %{buildroot}%{_bindir}
     ln -snf %{_datadir}/amsn/amsn-remote-CLI amsn-remote-CLI
 popd
 
-ln -sf %{_docdir}%{name}-%{version}/README %{buildroot}%{_datadir}/amsn/README
-ln -sf %{_docdir}%{name}-%{version}/HELP %{buildroot}%{_datadir}/amsn/HELP
-
 # Menu
 sed -i -e 's,%{name}.png,%{name},g' %{buildroot}%{_datadir}/amsn/amsn.desktop
 desktop-file-install --vendor="" \
@@ -140,8 +137,6 @@ install -m644 desktop-icons/22x22/apps/%{name}.png %{buildroot}/%{_iconsdir}/hic
 install -m644 desktop-icons/16x16/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/16x16/apps/%{name}.png
 
 # cleanup
-rm -rf %{buildroot}%{_datadir}/amsn/HELP
-rm -rf %{buildroot}%{_datadir}/amsn/README
 rm -f %{buildroot}%{_datadir}/amsn/sndplay
 
 %if %mdkversion < 200900
