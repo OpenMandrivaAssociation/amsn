@@ -1,7 +1,7 @@
 %define pre	0
 %define svn	0
-%define rel	5
-%define oversion 0.98
+%define rel	1
+
 %if %pre
 %define release		%mkrel -c %pre %rel
 %define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
@@ -13,8 +13,8 @@
 %define dirname		amsn
 %else
 %define release		%mkrel %rel
-%define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{oversion}.tar.bz2
-%define dirname		%{name}-%{oversion}
+%define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+%define dirname		%{name}-%{version}
 %endif
 %endif
 
@@ -22,7 +22,7 @@ Summary:	MSN Messenger clone for Linux
 Summary(fr):	Clône MSN Messenger pour Linux
 Summary(de):	MSN Messenger-Klon für Linux
 Name:		amsn
-Version:	0.98.0
+Version:	0.98.1
 Release:	%{release}
 License:	GPLv2+
 Group:		Networking/Instant messaging
@@ -47,7 +47,6 @@ BuildRequires:	libv4l-devel
 BuildRequires:	farsight2-devel
 BuildRequires:	libgstreamer-plugins-base-devel
 BuildRequires:	gupnp-igd-devel
-BuildRequires:	libimlib-devel
 Requires:	tcl >= 8.5
 Requires:	tk >= 8.5
 Requires:	tcltls
@@ -88,11 +87,6 @@ Dateiübertragungen, Gruppen uvm.
 %build
 autoreconf -fi
 %configure2_5x
-%make
-
-#fix Imlib dependency
-rm -rf plugins/amsnplus/snapshot
-cd plugins/amsnplus/
 %make
 
 %install
