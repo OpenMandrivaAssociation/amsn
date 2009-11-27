@@ -1,6 +1,6 @@
 %define pre	0
 %define svn	0
-%define rel	1
+%define rel	2
 
 %if %pre
 %define release		%mkrel -c %pre %rel
@@ -28,12 +28,12 @@ License:	GPLv2+
 Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
 Source0:	%{distname}
-Source2:	amsn-0.97-startup
-#Source3:	desktop_integration-r9739.zip
+Source3:	amsn-desktop_integration_r11173.tar.gz
 Patch0:		amsn-11098-pt-encoding.patch
 Patch1:		amsn-11406-defaultplugins.patch
 Patch2:		amsn-11098-contact_list_extension.patch
 Patch3:		amsn-0.98-linkage.patch
+Patch4:		amsn-0.98.1-fix_file_locations.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -50,8 +50,6 @@ BuildRequires:	gupnp-igd-devel
 Requires:	tcl >= 8.5
 Requires:	tk >= 8.5
 Requires:	tcltls
-Requires:	soundwrapper
-Requires:	tcl-snack
 Requires:	gstreamer0.10-plugins-bad
 Requires:	gstreamer0.10-farsight2
 Requires:	libnice-utils
@@ -81,38 +79,30 @@ Dateiübertragungen, Gruppen uvm.
 %patch1 -p0 -b .defaultplugins
 %patch2 -p1 -b .contact_list_extension
 %patch3 -p1 -b .link
-#cd plugins
-#unzip %{_sourcedir}/desktop_integration-r9739.zip
+%patch4 -p0 -b .locations
+
+# remove some Win stuff
+rm -r skins/default/winicons
+rm -r plugins/music/MusicWin*
+
+# use aplay to play sounds
+sed -i 's#soundcommand "play \\$sound"#soundcommand "aplay -q \\$sound"#' config.tcl 
+
+# add Desktop Integration plugin
+cd plugins
+tar xvf %{_sourcedir}/amsn-desktop_integration_r11173.tar.gz
 
 %build
 autoreconf -fi
-%configure2_5x
+%configure2_5x --enable-debug
 %make
 
 %install
 rm -rf %{buildroot}
 %makeinstall_std
 
-install -d %{buildroot}%{_bindir}
-rm -f %{buildroot}%{_bindir}/amsn
-install -m0755 %{SOURCE2} %{buildroot}%{_bindir}/amsn
-
-# fix softlinks
-pushd %{buildroot}%{_bindir}
-    ln -snf %{_datadir}/amsn/amsn-remote amsn-remote
-    ln -snf %{_datadir}/amsn/amsn-remote-CLI amsn-remote-CLI
-popd
-
 # Menu
-sed -i -e 's,%{name}.png,%{name},g' %{buildroot}%{_datadir}/amsn/amsn.desktop
 desktop-file-install --vendor="" \
-  --remove-key="Encoding" \
-  --remove-key="Info" \
-  --remove-category="Application" \
-  --remove-key='Info' \
-  --remove-key='Encoding' \
-  --add-category="Network" \
-  --add-category="InstantMessaging" \
   --add-category="X-MandrivaLinux-CrossDesktop" \
   --dir %{buildroot}%{_datadir}/amsn %{buildroot}%{_datadir}/amsn/amsn.desktop
 
@@ -150,7 +140,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AGREEMENT CREDITS FAQ GNUGPL HELP README TODO
+%doc AGREEMENT CREDITS FAQ FAQ.html GNUGPL HELP README TODO lang/LANG-HOWTO
 %{_bindir}/%{name}
 %{_bindir}/%{name}-remote
 %{_bindir}/%{name}-remote-CLI
@@ -158,4 +148,3 @@ rm -rf %{buildroot}
 %{_datadir}/applications/%{name}.desktop
 %{_iconsdir}/hicolor/*/apps/*
 %{_datadir}/pixmaps/*
-
