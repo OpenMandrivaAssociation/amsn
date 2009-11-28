@@ -19,8 +19,6 @@
 %endif
 
 Summary:	MSN Messenger clone for Linux
-Summary(fr):	Clône MSN Messenger pour Linux
-Summary(de):	MSN Messenger-Klon für Linux
 Name:		amsn
 Version:	0.98.1
 Release:	%{release}
@@ -53,6 +51,8 @@ Requires:	tcltls
 Requires:	gstreamer0.10-plugins-bad
 Requires:	gstreamer0.10-farsight2
 Requires:	libnice-utils
+Requires:	tcl-snack
+Requires:	alsa-utils
 Obsoletes:	amsn-plugins
 Obsoletes:	amsn-skins
 BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
@@ -61,16 +61,6 @@ BuildRoot:	%{_tmppath}/buildroot-%{name}-%{version}
 AMSN is a Microsoft Messenger (MSN) clone for Unix, Windows and 
 Macintosh platforms. It supports file transfers, groups, video,
 voice and many more features.
-
-%description -l fr
-amsn est un client Microsoft Messenger (MSN) pour UNIX, Windows et
-Macintosh écrit en Tcl/Tk.  Il supporte les tranferts de fichiers, les
-groupes et beaucoup d'autres possibilités. 
-
-%description -l de
-amsn ist ein Microsoft Messenger (MSN) Client für UNIX, Windows und
-Macintosh, der in Tcl/Tk geschrieben ist. Es unterstützt
-Dateiübertragungen, Gruppen uvm.
 
 %prep
 
@@ -107,21 +97,22 @@ desktop-file-install --vendor="" \
   --dir %{buildroot}%{_datadir}/amsn %{buildroot}%{_datadir}/amsn/amsn.desktop
 
 mkdir -p %{buildroot}%{_datadir}/applications
-cp  %{buildroot}%{_datadir}/amsn/amsn.desktop %{buildroot}%{_datadir}/applications/amsn.desktop
+mv  %{buildroot}%{_datadir}/amsn/amsn.desktop %{buildroot}%{_datadir}/applications/amsn.desktop
 
 #icons
-mkdir -p %{buildroot}/%{_iconsdir}/hicolor/{128x128,96x96,72x72,64x64,48x48,32x32,22x22,16x16}/apps
-install -m644 desktop-icons/128x128/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/128x128/apps/%{name}.png
-install -m644 desktop-icons/96x96/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/96x96/apps/%{name}.png
-install -m644 desktop-icons/72x72/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/72x72/apps/%{name}.png
-install -m644 desktop-icons/64x64/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/64x64/apps/%{name}.png
-install -m644 desktop-icons/48x48/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/48x48/apps/%{name}.png
-install -m644 desktop-icons/32x32/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/32x32/apps/%{name}.png
-install -m644 desktop-icons/22x22/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/22x22/apps/%{name}.png
-install -m644 desktop-icons/16x16/apps/%{name}.png %{buildroot}/%{_iconsdir}/hicolor/16x16/apps/%{name}.png
+mkdir -p %{buildroot}%{_iconsdir}
+mv %{buildroot}%{_datadir}/%{name}/desktop-icons/ %{buildroot}%{_iconsdir}/hicolor/
+rm %{buildroot}%{_datadir}/pixmaps/%{name}.png
 
 # cleanup
-rm -f %{buildroot}%{_datadir}/amsn/sndplay
+rm -f %{buildroot}%{_datadir}/%{name}/sndplay
+rm -r %{buildroot}%{_datadir}/%{name}/lang/{*.*,LANG-HOWTO,sortlang}
+rm -f %{buildroot}%{_datadir}/%{name}/docs/DOCS-HOWTO
+rm -r %{buildroot}%{_datadir}/%{name}/{AGREEMENT,CREDITS,GNUGPL,INSTALL,remote.help,TODO}
+
+# fix rights
+chmod 755 %{buildroot}%{_datadir}/%{name}/utils/voipcontrols/test.tcl
+chmod 755 %{buildroot}%{_datadir}/%{name}/skins/Dark\ Matter\ 4.0/pixmapscroll/test.tcl
 
 %if %mdkversion < 200900
 %post
@@ -140,11 +131,10 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AGREEMENT CREDITS FAQ FAQ.html GNUGPL HELP README TODO lang/LANG-HOWTO
+%doc AGREEMENT CREDITS FAQ FAQ.html GNUGPL HELP README TODO lang/LANG-HOWTO docs/DOCS-HOWTO remote.help
 %{_bindir}/%{name}
 %{_bindir}/%{name}-remote
 %{_bindir}/%{name}-remote-CLI
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_iconsdir}/hicolor/*/apps/*
-%{_datadir}/pixmaps/*
