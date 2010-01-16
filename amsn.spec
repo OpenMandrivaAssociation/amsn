@@ -1,6 +1,6 @@
 %define pre	0
 %define svn	0
-%define rel	3
+%define rel	4
 
 %if %pre
 %define release		%mkrel -c %pre %rel
