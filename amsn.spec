@@ -32,6 +32,7 @@ Patch1:		amsn-11406-defaultplugins.patch
 Patch2:		amsn-11098-contact_list_extension.patch
 Patch3:		amsn-0.98-linkage.patch
 Patch4:		amsn-0.98.1-fix_file_locations.patch
+Patch5:		amsn-0.98.1-disable_version_check_on_startup.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -70,6 +71,7 @@ voice and many more features.
 %patch2 -p1 -b .contact_list_extension
 %patch3 -p1 -b .link
 %patch4 -p0 -b .locations
+%patch5 -p0 -b .version_check
 
 # remove some Win stuff
 rm -r skins/default/winicons
@@ -108,7 +110,7 @@ rm %{buildroot}%{_datadir}/pixmaps/%{name}.png
 rm -f %{buildroot}%{_datadir}/%{name}/sndplay
 rm -r %{buildroot}%{_datadir}/%{name}/lang/{*.*,LANG-HOWTO,sortlang}
 rm -f %{buildroot}%{_datadir}/%{name}/docs/DOCS-HOWTO
-rm -r %{buildroot}%{_datadir}/%{name}/{AGREEMENT,CREDITS,GNUGPL,INSTALL,remote.help,TODO}
+rm -r %{buildroot}%{_datadir}/%{name}/{GNUGPL,INSTALL,remote.help,TODO}
 
 # fix rights
 chmod 755 %{buildroot}%{_datadir}/%{name}/utils/voipcontrols/test.tcl
