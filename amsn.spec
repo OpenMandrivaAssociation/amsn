@@ -1,6 +1,6 @@
 %define pre	0
 %define svn	0
-%define rel	5
+%define rel	1
 
 %if %pre
 %define release		%mkrel -c %pre %rel
@@ -13,20 +13,19 @@
 %define dirname		amsn
 %else
 %define release		%mkrel %rel
-%define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+%define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}-src.tar.bz2
 %define dirname		%{name}-%{version}
 %endif
 %endif
 
 Summary:	MSN Messenger clone for Linux
 Name:		amsn
-Version:	0.98.1
+Version:	0.98.3
 Release:	%{release}
 License:	GPLv2+
 Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
 Source0:	%{distname}
-Source3:	amsn-desktop_integration_r11173.tar.gz
 Patch0:		amsn-11098-pt-encoding.patch
 Patch1:		amsn-11406-defaultplugins.patch
 Patch2:		amsn-11098-contact_list_extension.patch
@@ -46,6 +45,7 @@ BuildRequires:	libv4l-devel
 BuildRequires:	farsight2-devel
 BuildRequires:	libgstreamer-plugins-base-devel
 BuildRequires:	gupnp-igd-devel
+BuildRequires:	libimlib-devel
 Requires:	tcl >= 8.5
 Requires:	tk >= 8.5
 Requires:	tcltls
@@ -80,13 +80,17 @@ rm -r plugins/music/MusicWin*
 # use aplay to play sounds
 sed -i 's#soundcommand "play \\$sound"#soundcommand "aplay -q \\$sound"#' config.tcl 
 
-# add Desktop Integration plugin
-cd plugins
-tar xvf %{_sourcedir}/amsn-desktop_integration_r11173.tar.gz
-
 %build
 autoreconf -fi
 %configure2_5x --enable-debug
+
+# build amsnplus plugin again
+# and thus fix binary-or-shlib-defines-rpath
+pushd plugins/amsnplus
+	rm -rf snapshot
+	%make
+popd
+
 %make
 
 %install
@@ -107,14 +111,14 @@ mv %{buildroot}%{_datadir}/%{name}/desktop-icons/ %{buildroot}%{_iconsdir}/hicol
 rm %{buildroot}%{_datadir}/pixmaps/%{name}.png
 
 # cleanup
-rm -f %{buildroot}%{_datadir}/%{name}/sndplay
-rm -r %{buildroot}%{_datadir}/%{name}/lang/{*.*,LANG-HOWTO,sortlang}
-rm -f %{buildroot}%{_datadir}/%{name}/docs/DOCS-HOWTO
-rm -r %{buildroot}%{_datadir}/%{name}/{GNUGPL,INSTALL,remote.help,TODO}
+rm -rf %{buildroot}%{_datadir}/%{name}/sndplay
+rm -rf %{buildroot}%{_datadir}/%{name}/lang/{*.*,LANG-HOWTO,sortlang}
+rm -rf %{buildroot}%{_datadir}/%{name}/docs/DOCS-HOWTO
+rm -rf %{buildroot}%{_datadir}/%{name}/{GNUGPL,INSTALL,remote.help,TODO}
+rm -rf %{buildroot}%{_datadir}/%{name}/plugins/amsnplus/{Makefile,snapshot.c}
 
 # fix rights
-chmod 755 %{buildroot}%{_datadir}/%{name}/utils/voipcontrols/test.tcl
-chmod 755 %{buildroot}%{_datadir}/%{name}/skins/Dark\ Matter\ 4.0/pixmapscroll/test.tcl
+find %{buildroot}%{_datadir}/%{name}/ -name test.tcl -exec chmod 755 {} \;
 
 %if %mdkversion < 200900
 %post
