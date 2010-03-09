@@ -1,6 +1,6 @@
 %define pre	0
 %define svn	0
-%define rel	1
+%define rel	2
 
 %if %pre
 %define release		%mkrel -c %pre %rel
@@ -84,8 +84,8 @@ sed -i 's#soundcommand "play \\$sound"#soundcommand "aplay -q \\$sound"#' config
 autoreconf -fi
 %configure2_5x --enable-debug
 
-# build amsnplus plugin again
-# and thus fix binary-or-shlib-defines-rpath
+# don't use prebuilt snapshot binary for amsnplus,
+# rebuild it and thus fix binary-or-shlib-defines-rpath
 pushd plugins/amsnplus
 	rm -rf snapshot
 	%make
