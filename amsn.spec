@@ -51,7 +51,13 @@ Requires:	tk >= 8.5
 Requires:	tcltls
 Requires:	gstreamer0.10-plugins-bad
 Requires:	gstreamer0.10-farsight2
+
+%if %mdkversion >= 201000
 Requires:	libnice-utils
+%else
+Requires:	libnice
+%endif
+
 Requires:	tcl-snack
 Requires:	alsa-utils
 Obsoletes:	amsn-plugins
