@@ -1,7 +1,7 @@
 %define version	0.98.4
 %define pre	0
 %define svn	0
-%define rel	1
+%define rel	2
 
 %if %pre
 %define release		%mkrel -c %pre %rel
@@ -104,7 +104,11 @@ rm -rf %{buildroot}
 
 # desktop file
 mkdir -p %{buildroot}%{_datadir}/applications
-mv  %{buildroot}%{_datadir}/amsn/amsn.desktop %{buildroot}%{_datadir}/applications/amsn.desktop
+desktop-file-install \
+	--delete-original %{buildroot}%{_datadir}/%{name}/%{name}.desktop \
+	--add-category="X-MandrivaLinux-CrossDesktop" \
+	--dir %{buildroot}%{_datadir}/applications/ \
+	%{buildroot}%{_datadir}/applications/%{name}.desktop
 
 # icons
 mkdir -p %{buildroot}%{_iconsdir}
