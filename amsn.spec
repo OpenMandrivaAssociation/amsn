@@ -32,6 +32,7 @@ Patch2:		amsn-0.98.4-contact_list_extension.patch
 Patch3:		amsn-0.98.4-linkage.patch
 Patch4:		amsn-0.98.4-fix_file_locations.patch
 Patch5:		amsn-0.98.4-disable_version_check_on_startup.patch
+Patch6:		amsn-0.98.4-amsnplus_flags.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -46,6 +47,8 @@ BuildRequires:	farsight2-devel
 BuildRequires:	libgstreamer-plugins-base-devel
 BuildRequires:	gupnp-igd-devel
 BuildRequires:	libimlib-devel
+BuildRequires:	libice-devel
+BuildRequires:	libsm-devel
 Requires:	tcl >= 8.5
 Requires:	tk >= 8.5
 Requires:	tcltls
@@ -77,6 +80,7 @@ voice and many more features.
 %patch3 -p1 -b .link
 %patch4 -p0 -b .locations
 %patch5 -p0 -b .version_check
+%patch6 -p0 -b .flags
 
 # remove some Win stuff
 rm -r skins/default/winicons
@@ -96,7 +100,7 @@ pushd plugins/amsnplus
 	%make
 popd
 
-%make
+%make verbose=yes
 
 %install
 rm -rf %{buildroot}
