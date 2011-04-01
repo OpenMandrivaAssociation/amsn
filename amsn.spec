@@ -22,7 +22,7 @@ BuildRequires:	imagemagick
 BuildRequires:	desktop-file-utils
 BuildRequires:	png-devel
 BuildRequires:	jpeg-devel
-BuildRequires:	libv4l-devel
+BuildRequires:	libv4l-devel >= 0.8.3
 BuildRequires:	farsight2-devel
 BuildRequires:	libgstreamer-plugins-base-devel
 BuildRequires:	gupnp-igd-devel
