@@ -1,32 +1,11 @@
-%define version	0.98.4
-%define pre	0
-%define svn	0
-%define rel	2
-
-%if %pre
-%define release		%mkrel -c %pre %rel
-%define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}%{pre}.tar.bz2
-%define dirname		%{name}-%{version}%{pre}
-%else
-%if %svn
-%define release		%mkrel 0.%svn.%rel
-%define distname	%{name}-%{svn}.tar.lzma
-%define dirname		amsn
-%else
-%define release		%mkrel %rel
-%define distname	http://downloads.sourceforge.net/%{name}/%{name}-%{version}-src.tar.bz2
-%define dirname		%{name}-%{version}
-%endif
-%endif
-
 Summary:	MSN Messenger clone for Linux
 Name:		amsn
-Version:	%{version}
-Release:	%{release}
+Version:	0.98.4
+Release:	%mkrel 3
 License:	GPLv2+
 Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
-Source0:	%{distname}
+Source0:	http://downloads.sourceforge.net/%{name}/%{name}-%{version}-src.tar.bz2
 Patch1:		amsn-0.98.4-defaultplugins.patch
 Patch2:		amsn-0.98.4-contact_list_extension.patch
 Patch3:		amsn-0.98.4-linkage.patch
@@ -73,8 +52,7 @@ Macintosh platforms. It supports file transfers, groups, video,
 voice and many more features.
 
 %prep
-
-%setup -q -n %{dirname}
+%setup -q -n %{name}-%{version}
 %patch1 -p0 -b .defaultplugins
 %patch2 -p1 -b .contact_list_extension
 %patch3 -p1 -b .link
