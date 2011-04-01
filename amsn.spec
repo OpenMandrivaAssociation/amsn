@@ -13,6 +13,7 @@ Patch4:		amsn-0.98.4-fix_file_locations.patch
 Patch5:		amsn-0.98.4-disable_version_check_on_startup.patch
 Patch6:		amsn-0.98.4-amsnplus_flags.patch
 Patch7:		amsn-0.98.4-kernel-2.6.38.patch
+Patch8:		amsn-0.98.4-gcc43.patch
 BuildRequires:	tcl >= 8.5
 BuildRequires:	openssl-devel
 BuildRequires:	tk >= 8.5
@@ -61,6 +62,7 @@ voice and many more features.
 %patch5 -p0 -b .version_check
 %patch6 -p0 -b .flags
 %patch7 -p0 -b .kernel
+%patch8 -p0 -b .gcc
 
 # remove some Win stuff
 rm -r skins/default/winicons
