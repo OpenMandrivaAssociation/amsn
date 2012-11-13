@@ -1,0 +1,12 @@
+diff -p -up ./plugins.tcl.defaultplugins ./plugins.tcl
+--- ./plugins.tcl.defaultplugins	2010-07-19 17:12:42.000000000 +0200
++++ ./plugins.tcl	2010-12-06 13:08:08.000000000 +0100
+@@ -1313,7 +1313,7 @@ namespace eval ::plugins {
+ 			#logic: if this is the first time the user logged in, then 
+ 			#the configuration list is empty which means load_config
+ 			#makes loadedplugins empty
+-			set loadedplugins [list "Nudge" "Winks" "Cam Shooter" "remind" "Notes" "ColoredNicks" "Inkdraw"]
++			set loadedplugins [list "Nudge" "Winks" "Cam Shooter" "remind" "Notes" "ColoredNicks" "Inkdraw" "Desktop Integration"]
+ 
+ 			status_log "Plugins System: load_config: No plugins.xml]\n" red
+ 		}

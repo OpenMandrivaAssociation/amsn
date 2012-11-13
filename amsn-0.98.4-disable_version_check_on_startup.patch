@@ -1,0 +1,12 @@
+diff -p -up ./config.tcl.orig ./config.tcl
+--- ./config.tcl.orig	2010-01-06 15:28:10.846514310 +0200
++++ ./config.tcl	2010-01-06 15:33:15.309763563 +0200
+@@ -233,7 +233,7 @@ namespace eval ::config {
+ 		::config::setKey autoconnect 0			;#Automatically connect when amsn starts
+ 		::config::setKey libtls_temp ""			;#TLS
+ 		::config::setKey lineflushlog 1			;#Flush log files after each line
+-		::config::setKey autocheckver 1			;#Automatically check for newer versions on startup
++		::config::setKey autocheckver 0			;#Automatically check for newer versions on startup
+ 		::config::setKey truncatenames 1		;#Truncate nicknames longer than window width in windows' title
+ 		::config::setKey truncatenicks 0		;#Truncate nicknames longer than window width in chat windows
+ 		::config::setKey keepalive 1				;#Keep alive connection (ping every minute)

@@ -1,0 +1,11 @@
+--- utils/linux/capture/capture.h.kernel	2011-04-01 08:48:38.000000000 +0200
++++ utils/linux/capture/capture.h	2011-04-01 08:52:48.000000000 +0200
+@@ -33,7 +33,7 @@
+ #ifdef HAVE_SYS_VIDEODEV2_H
+ #   include <sys/videodev2.h>
+ #else
+-#   include <linux/videodev.h>
++#   include <libv4l1-videodev.h>
+ #endif
+ 
+ #include "grab-ng.h"

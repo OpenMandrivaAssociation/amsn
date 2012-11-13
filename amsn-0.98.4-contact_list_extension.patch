@@ -1,0 +1,16 @@
+diff -p -up amsn/gui.tcl.contact_list_double_extension amsn/gui.tcl
+--- amsn/gui.tcl.contact_list_extension	2009-06-27 23:45:11.000000000 -0300
++++ amsn/gui.tcl	2009-06-27 23:46:01.000000000 -0300
+@@ -7419,10 +7419,10 @@ proc saveContacts2 { } {
+ 	}
+ 	set filename [tk_getSaveFile -filetypes $types -defaultextension ".$format" -initialfile "amsncontactlist.$format"]
+ 	if {$filename != ""} {
+-		if { [string match "$filename" "*.$format"] == 0 } {
++		if { [string match -nocase "*.$format" "$filename"] == 0 } {
+ 			set filename "$filename.$format"
+-			::abook::saveToDisk $filename $format
+ 		}
++		::abook::saveToDisk $filename $format
+ 	}
+ 
+ 	destroy .savecontacts

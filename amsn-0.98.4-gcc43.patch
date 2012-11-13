@@ -1,0 +1,11 @@
+--- utils/linux/capture/libng/grab-ng.c.gcc	2011-04-01 09:23:37.000000000 +0200
++++ utils/linux/capture/libng/grab-ng.c	2011-04-01 09:25:59.000000000 +0200
+@@ -877,7 +877,7 @@
+ 		goto err;
+ 	    }
+     } else {
+-        if (-1 == (fd = open(device, flags))) {
++        if (-1 == (fd = open(device, flags, 0777))) {
+                 if (complain)
+                     fprintf(stderr,"open(%s): %s\n",device,strerror(errno));
+                 goto err;

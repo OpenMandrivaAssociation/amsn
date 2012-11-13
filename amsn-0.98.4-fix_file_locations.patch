@@ -1,0 +1,33 @@
+diff -p -up ./amsn-remote-CLI.orig ./amsn-remote-CLI
+--- ./amsn-remote-CLI.orig	2009-11-27 16:28:04.000000000 +0100
++++ ./amsn-remote-CLI	2009-11-27 16:28:42.000000000 +0100
+@@ -5,7 +5,7 @@
+ 
+ set initialize_amsn 1
+ 
+-source amsncore.tcl
++source /usr/share/amsn/amsncore.tcl
+ 
+ proc readsocket { } {
+ 	global sock
+@@ -229,7 +229,7 @@ if {[catch {file readlink [info script]}
+    }
+ }
+ 
+-source [file join $program_dir migmd5.tcl]
++source [file join /usr/share/amsn/migmd5.tcl]
+ 
+ set sockDS 0
+ 
+diff -p -up ./amsn-remote.orig ./amsn-remote
+--- ./amsn-remote.orig	2009-11-27 16:26:37.000000000 +0100
++++ ./amsn-remote	2009-11-27 16:27:01.000000000 +0100
+@@ -3,7 +3,7 @@
+ ### Remote controller program
+ ###
+ 
+-source amsncore.tcl
++source /usr/share/amsn/amsncore.tcl
+ 
+ set initialize_amsn 1
+ 
