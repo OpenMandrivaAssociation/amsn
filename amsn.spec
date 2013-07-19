@@ -1,11 +1,11 @@
 Summary:		MSN Messenger clone for Linux
 Name:		amsn
-Version:		0.98.4
+Version:		0.98.9
 Release:		1
 License:		GPLv2+
 Group:		Networking/Instant messaging
 URL:		http://amsn.sourceforge.net/
-Source0:		http://downloads.sourceforge.net/%{name}/%{name}-%{version}-src.tar.bz2
+Source0:		https://sourceforge.net/projects/amsn/files/amsn/0.98.9/amsn-0.98.9-src.tar.bz2
 Patch1:		amsn-0.98.4-defaultplugins.patch
 Patch2:		amsn-0.98.4-contact_list_extension.patch
 Patch3:		amsn-0.98.4-linkage.patch
@@ -393,4 +393,5 @@ find %{buildroot}%{_datadir}/%{name}/ -name test.tcl -exec chmod 755 {} \;
   + plouf <plouf>
     - add Requires on soundwrapper
     - Import amsn
+
 
