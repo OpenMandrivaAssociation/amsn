@@ -4,7 +4,7 @@ Version:		0.98.4
 Release:		2
 License:		GPLv2+
 Group:		Networking/Instant messaging
-URL:		http://amsn.sourceforge.net/
+URL:		https://amsn.sourceforge.net/
 Source0:		http://downloads.sourceforge.net/%{name}/%{name}-%{version}-src.tar.bz2
 Patch1:		amsn-0.98.4-defaultplugins.patch
 Patch2:		amsn-0.98.4-contact_list_extension.patch
