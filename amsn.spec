@@ -15,6 +15,11 @@ Patch6:		amsn-0.98.4-amsnplus_flags.patch
 Patch7:		amsn-0.98.4-kernel-2.6.38.patch
 Patch8:		amsn-0.98.4-gcc43.patch
 Patch9:		amsn-0.98.4-libpng15.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	tcl >= 8.5
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	tk >= 8.5
